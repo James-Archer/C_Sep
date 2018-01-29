@@ -1,0 +1,110 @@
+<Cluster>
+<Name>Channel A Settings</Name>
+<NumElts>5</NumElts>
+<Boolean>
+<Name>Enabled</Name>
+<Val>1</Val>
+</Boolean>
+<I32>
+<Name>Coupling</Name>
+<Val>1</Val>
+</I32>
+<U16>
+<Name>Range</Name>
+<Val>6</Val>
+</U16>
+<SGL>
+<Name>Analogue Offset</Name>
+<Val>0.00000</Val>
+</SGL>
+<I32>
+<Name>Bandwidth</Name>
+<Val>0</Val>
+</I32>
+</Cluster>
+
+<Cluster>
+<Name>Acquisition Settings</Name>
+<NumElts>7</NumElts>
+<U32>
+<Name>preTriggerSamples</Name>
+<Val>1000</Val>
+</U32>
+<U32>
+<Name>postTriggerSamples</Name>
+<Val>20000</Val>
+</U32>
+<U32>
+<Name>timebase</Name>
+<Val>2</Val>
+</U32>
+<I32>
+<Name>Down-Sample Mode</Name>
+<Val>0</Val>
+</I32>
+<U32>
+<Name>Down Sample Ratio</Name>
+<Val>1</Val>
+</U32>
+<Boolean>
+<Name>Four Channel Device</Name>
+<Val>0</Val>
+</Boolean>
+<I16>
+<Name>Oversample</Name>
+<Val>1</Val>
+</I16>
+</Cluster>
+
+<Cluster>
+<Name>Trigger Settings</Name>
+<NumElts>6</NumElts>
+<Boolean>
+<Name>Trigger Enabled</Name>
+<Val>0</Val>
+</Boolean>
+<EL>
+<Name>Trigger Source</Name>
+<Choice>Channel A</Choice>
+<Choice>Channel B</Choice>
+<Choice>Channel C</Choice>
+<Choice>Channel D</Choice>
+<Choice>External</Choice>
+<Choice>Aux.</Choice>
+<Val>3</Val>
+</EL>
+<I16>
+<Name>Trigger Threshold (16-bit counts)</Name>
+<Val>0</Val>
+</I16>
+<U16>
+<Name>Trigger Direction</Name>
+<Val>2</Val>
+</U16>
+<U32>
+<Name>Trigger Delay (samples)</Name>
+<Val>0</Val>
+</U32>
+<I16>
+<Name>Auto Trigger Time (ms)</Name>
+<Val>1000</Val>
+</I16>
+</Cluster>
+***2D***
+xStep	4.000000
+yStep	4.000000
+xStart	71.000000
+yStart	71.000000
+n_x	3.000000
+n_y	3.000000
+
+
+07-01-2018-131122-00.txt
+07-01-2018-131123-01.txt
+07-01-2018-131124-02.txt
+07-01-2018-131126-03.txt
+07-01-2018-131128-04.txt
+07-01-2018-131130-05.txt
+07-01-2018-131132-06.txt
+07-01-2018-131134-07.txt
+07-01-2018-131135-08.txt

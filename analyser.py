@@ -15,7 +15,7 @@ class Analyser():
     The class to wrap up all the functionality of the Cherenkov separation. 
     Call this with the logFile name and it **should** figure out everything from there.
     '''
-    def __init__(self, logFileName, parentDir = None):
+    def __init__(self, logFileName, parentDir = None, runScheme = None, runArgs = None):
         '''
         Sets up the files to be run, then executes the analysis. Try to run from the parent directory to output/
         Arguments:
@@ -26,7 +26,18 @@ class Analyser():
         self.methods = {'SubtractBackground': SubtractBackground,
                         'Sum': Sum
                         }
-        
+        if not runScheme:
+            self.runScheme = ['SubtractBackground', 'Sum']
+        else:
+            self.runScheme = runScheme
+            
+        if not runArgs:
+            self.runArgs = [{'window':1000, 'inverted':True},
+                            {}
+                            ]
+        else:
+            self.runArgs = runArgs
+            
         if parentDir:
             os.chdir(parentDir)
         self.files = []
@@ -65,6 +76,7 @@ class Analyser():
                 y0 = float(line.split('\t')[1])
         logFile.close()
         
+        # Run for each file in the log
         self.results = []
         for file in self.files:
             self.results.append(self.RunFile('./output/' + file))
@@ -81,10 +93,10 @@ class Analyser():
             
     def RunFile(self, fName):
         
-        x = np.loadtxt(fName, dtype = np.float16, skiprows=4, delimiter='\t', usecols = 1)
-        print(x.min(), x.max())
-        x = self.methods['SubtractBackground'](x)
-        return self.methods['Sum'](x)
+        x = np.loadtxt(fName, dtype = np.float32, skiprows=4, delimiter='\t', usecols = 1)
+        for scheme, args in zip(self.runScheme[:-1], self.runArgs[-1]):
+            x = self.methods[scheme](x, **args)
+        return self.methods[self.runScheme[-1]](x, **self.runArgs[-1])
     
     def Plot3D(self):
         
