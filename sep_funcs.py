@@ -31,3 +31,13 @@ def Sum(x):
     Simple test analysis that just returns the sum of the data
     '''
     return np.sum(x)
+
+def TailAnalysis(x):
+    '''
+    Uses the tail of the signal to integrate the signal. Signal should be 'upright'
+    Requires:
+        SubtractBackground
+    '''
+    derivative = np.diff(x)
+    inStart = np.argmax(derivative)
+    return np.sum(x[inStart:])

@@ -21,17 +21,22 @@ class Analyser():
         Arguments:
         logFileName -- String. The name of the log file to be read. Standard format is just the file name (no ext).
             Can also be the absolute path (with ext).
+        parentDir -- String. The directory that is the relative parent to the /output/ with the logFile.
+        runScheme -- List. The function names to run on the data, in order of running.
+        runArgs -- List. List of dicts of the keyword args for the each function in runScheme.
         '''
         
         self.methods = {'SubtractBackground': SubtractBackground,
                         'Sum': Sum
                         }
         if not runScheme:
+            # Default runScheme. Can also be used as template
             self.runScheme = ['SubtractBackground', 'Sum']
         else:
             self.runScheme = runScheme
             
         if not runArgs:
+            # Default runArgs. Can also be used as template
             self.runArgs = [{'window':1000, 'inverted':True},
                             {}
                             ]
@@ -99,6 +104,9 @@ class Analyser():
         return self.methods[self.runScheme[-1]](x, **self.runArgs[-1])
     
     def Plot3D(self):
+        '''
+        Does a 3D plot
+        '''
         
         import matplotlib.pyplot as plt
         from mpl_toolkits.mplot3d import Axes3D
@@ -108,6 +116,24 @@ class Analyser():
         surf = ax.plot_surface(self.pos[0], self.pos[1], self.results, cmap=cm.coolwarm,
                        linewidth=0, antialiased=False)
         plt.show()
+        
+    def Plot2D(self):
+        '''
+        Does a 2D plot.
+        '''
+        
+        plt.plot(self.pos, self.results)
+        plt.show()
+        
+    def Plot(self):
+        '''
+        Decide which plot to use. Quite simple.
+        '''
+        
+        if self.is2DL:
+            self.Plot3D()
+        else:
+            self.Plot2D()
         
     
 if __name__=='__main__':
