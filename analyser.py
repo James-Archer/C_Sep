@@ -5,15 +5,24 @@ Created on Mon Jan 29 11:04:52 2018
 @author: jia335
 """
 
+import numpy as np
+from matplotlib import pyplot as plt
+import os as os
+
 class Analyser():
-    
-    def __init__(self, logFileName):
+    '''
+    The class to wrap up all the functionality of the Cherenkov separation. 
+    Call this with the logFile name and it **should** figure out everything from there.
+    '''
+    def __init__(self, logFileName, parentDir = None):
         '''
         Sets up the files to be run, then executes the analysis. Try to run from the parent directory to output/
         Arguments:
-        logFileName -- String. The name of the log file to be read. Standard format is just the file name (no ext). Can also be the absolute path (with ext).
+        logFileName -- String. The name of the log file to be read. Standard format is just the file name (no ext).
+            Can also be the absolute path (with ext).
         '''
-        
+        if parentDir:
+            os.chdir(parentDir)
         self.files = []
         self.pos = None
         try:
@@ -28,20 +37,42 @@ class Analyser():
         for line in logFile:
             if '***2D***' in line:
                 self.is2D = True
-            if 'txt' in line:
+            elif 'txt' in line:
                 self.files.append(line.split('\n')[0])
-            if 'xStart' in line:
+            elif 'xStart' in line:
                 xStart = float(line.split('\t')[1])
-            if 'xStep' in line:
+            elif 'xStep' in line:
                 xStep = float(line.split('\t')[1])
-            if 'yStart' in line:
+            elif 'yStart' in line:
                 yStart = float(line.split('\t')[1])
-            if 'yStep' in line:
+            elif 'yStep' in line:
                 yStep = float(line.split('\t')[1])
-            if 'n_x' in line:
+            elif 'n_x' in line:
                 nx = int(line.split('\t')[1].split('.')[0])
-            if 'n_y' in line:
+            elif 'n_y' in line:
                 ny = int(line.split('\t')[1].split('.')[0])
+            elif 'Step (mm)' in line:
+                delta = float(line.split('\t')[1])
+            elif 'Start pos' in line:
+                x0 = float(line.split('\t')[1])
+            elif 'Stationary position' in line:
+                y0 = float(line.split('\t')[1])
         logFile.close()
         
+        self.results = []
+        for file in self.files:
+            self.results.append(self.RunFile('./output/' + file))
+        plt.show()
+        
+        if self.is2D:
+            
+            self.pos = np.array(np.meshgrid(np.arange(nx)*xStep+xStart, np.arange(ny)*yStep+yStart))
+            
+        else:
+        
+            self.pos = np.arange(len(self.files))*delta + x0
+            
+    def RunFile(self, fName):
+        
+        x = np.loadtxt(fName, dtype = np.float16, skiprows=4, delimiter='\t', usecols = 1)
         
